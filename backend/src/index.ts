@@ -3,14 +3,15 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import sqlite3 from 'sqlite3';
 
-const app = express();
-const port = 3001;
+export const app = express();
+const port = process.env.PORT || 3001;
 
 app.use(cors());
 app.use(bodyParser.json());
 
 // Initialize SQLite database
-const db = new sqlite3.Database('./expenses.db', (err) => {
+const dbPath = process.env.NODE_ENV === 'production' ? '/tmp/expenses.db' : './expenses.db';
+export const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Error opening database', err.message);
   } else {
@@ -82,6 +83,9 @@ app.post('/expenses', (req, res) => {
   });
 });
 
-app.listen(port, () => {
-  console.log(`Backend API running at http://localhost:${port}`);
-});
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(port, () => {
+    console.log(`Backend API running at http://localhost:${port}`);
+  });
+}
+
