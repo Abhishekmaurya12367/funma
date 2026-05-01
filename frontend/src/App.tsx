@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { PlusCircle, AlertCircle, IndianRupee } from 'lucide-react';
+import { PlusCircle, AlertCircle } from 'lucide-react';
 import { format, parseISO } from 'date-fns';
 
 const API_URL = import.meta.env.PROD ? '' : 'http://localhost:3001';
