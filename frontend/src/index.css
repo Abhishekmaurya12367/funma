@@ -328,6 +328,11 @@ body {
   padding-right: 36px;
 }
 
+.form-select option {
+  background-color: var(--color-surface-2);
+  color: var(--color-text);
+}
+
 .field-error {
   font-size: 0.78rem;
   color: var(--color-error);
@@ -497,6 +502,11 @@ body {
   background-position: right 8px center;
   -webkit-appearance: none;
   appearance: none;
+}
+
+.control-select option {
+  background-color: var(--color-surface-2);
+  color: var(--color-text);
 }
 
 .control-select:focus {
