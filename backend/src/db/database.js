@@ -22,7 +22,7 @@ const initSqlJs = require('sql.js');
 const path = require('path');
 const fs = require('fs');
 
-const DB_DIR = path.join(__dirname, '../../data');
+const DB_DIR = process.env.VERCEL ? '/tmp' : path.join(__dirname, '../../data');
 const DB_PATH = process.env.DB_PATH || path.join(DB_DIR, 'expenses.db');
 
 let db = null;
@@ -30,11 +30,16 @@ let db = null;
 /**
  * Persist the in-memory DB to disk after every write operation.
  * Called after INSERT operations to ensure data durability.
+ * Note: On Vercel, /tmp is ephemeral and will be cleared eventually.
  */
 function persist(dbPath = DB_PATH) {
-  const data = db.export();
-  const buffer = Buffer.from(data);
-  fs.writeFileSync(dbPath, buffer);
+  try {
+    const data = db.export();
+    const buffer = Buffer.from(data);
+    fs.writeFileSync(dbPath, buffer);
+  } catch (err) {
+    console.warn('[DB] Persistence failed (likely read-only FS):', err.message);
+  }
 }
 
 /**
